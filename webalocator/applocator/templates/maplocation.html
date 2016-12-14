@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My First Google Map - É nóis Grupo Python!</h1>
+<h2>Como passar os parametros de Latitude e Longitude do form do Django?</h2>
+<h2>Como colocar multiples Markers?</h2>
+
+<div>
+<form action="">
+  <input type="text" id="addressInput" autofocus value = "Type address to locate ..." />
+    <input type="submit" value="Submit" onclick="locatebyAddress()" />
+</form>
+</div>
+
+<div id="map" style="width:100%;height:500px"></div>
+
+<script>
+function locatebyAddress() {
+  var input = document.getElementById("addressInput").value;
+    alert("https://maps.googleapis.com/maps/api/geocode/json?address="+addressInput+"CA&key=GEOPOSITION_GOOGLE_MAPS_API_KEY");
+
+}
+
+function myMap() {
+  var locations = [
+      ['Sorocaba', -23.5015299,-47.4525603],
+      ['Itu', -23.2639728,-47.29970850000001],
+      ['Votorantim', -23.5402873,-47.444589199999996],
+  ]
+  
+  var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: new google.maps.LatLng(-23.5015299,-47.4525603),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+  for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+  }
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+
+</body>
+</html>
+
